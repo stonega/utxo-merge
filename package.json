@@ -1,0 +1,17 @@
+{
+  "name": "utxo-merge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "merge": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "@bitcoinerlab/secp256k1": "^1.0.5",
+    "bitcoinjs-lib": "^6.1.5",
+    "dotenv": "^16.4.1",
+    "ecpair": "^2.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
