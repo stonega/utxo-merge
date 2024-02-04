@@ -103,7 +103,6 @@ Summary
 
     const rawtx = tx.toHex();
     const result = await api.pushTx(rawtx);
-    console.log(result);
     return result;
 }
 
