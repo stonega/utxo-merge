@@ -49,7 +49,7 @@ const privateKey = process.env.PRIVATE_KEY;
 if (!privateKey) {
   throw new Error("PRIVATE_KEY is required");
 }
-async function merge({ value, amount }: {value: number, amount: number}) {
+async function merge({ limit, amount }: {limit: number, amount: number}) {
   const network = bitcoin.networks.testnet;
   const keyPair = ECPair.fromPrivateKey(Buffer.from(privateKey!, "hex"), {
     network,
@@ -64,7 +64,7 @@ async function merge({ value, amount }: {value: number, amount: number}) {
   const utxos = await api.getAddressUtxo(address!);
 
   let inputUtxos = utxos
-    .filter((utxo) => utxo.satoshis === value)
+    .filter((utxo) => utxo.satoshis <= limit)
     .slice(0, amount)
     .map((i) => ({
       hash: i.txId,
@@ -77,9 +77,10 @@ async function merge({ value, amount }: {value: number, amount: number}) {
     }));
 
   const fee = Math.ceil(57.5 * inputUtxos.length + 43 + 10.5);
+  const total = inputUtxos.reduce((acc, i) => acc + i.witnessUtxo.value, 0);
   const output = {
     address: address!,
-    value: value * 100 - fee,
+    value: total - fee,
   };
 
   const psbt = new bitcoin.Psbt({ network })
@@ -108,7 +109,8 @@ Summary
 
 async function main() {
     for(let i = 0; i < 1; i++) {
-        const tx = await merge({value: 1000, amount: 100});
+        const tx = await merge({limit: 100000, amount: 100});
+        console.log(`index: ${i}, txHash: ${tx}`);
         // wait 2 seconds
         await new Promise((resolve) => setTimeout(resolve, 2000));
     }
