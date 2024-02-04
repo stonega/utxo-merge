@@ -97,6 +97,7 @@ Summary
   Size:     ${tx.virtualSize()}
   fee:      ${fee}
   Fee Rate: ${feeRate} sat/vB
+  Output:   ${total - fee}
   Detail:   ${psbt.txInputs.length} Inputs, ${psbt.txOutputs.length} Outputs
 ----------------------------------------------------------------------------------------------
 `);
@@ -107,8 +108,8 @@ Summary
 }
 
 async function main() {
-    for(let i = 0; i < 1; i++) {
-        const tx = await merge({limit: 100000, amount: 100});
+    for(let i = 0; i < 100; i++) {
+        const tx = await merge({limit: 1000, amount: 100});
         console.log(`index: ${i}, txHash: ${tx}`);
         // wait 2 seconds
         await new Promise((resolve) => setTimeout(resolve, 2000));
