@@ -3,6 +3,6 @@
 node >= 18
 
 ```
-npm install
-npm merge
+yarn install
+yarn merge
 ```
